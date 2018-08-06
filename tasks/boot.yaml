@@ -31,11 +31,11 @@
 
   - copy:
       content: "{{ command_output.stdout }}"
-      dest: "./{{ vm-data }}-nova-boot"
+      dest: "./{{ vm.name }}-nova-boot"
 
   - name: Get server id for {{ vm.name }}
     shell: |
-      cat ./{{ vm-data }}-nova-boot | grep -w id | awk '{ print $4 }'
+      cat ./{{ vm.name }}-nova-boot | grep -w id | awk '{ print $4 }'
     register: id
 
   - name: Save instance create output
