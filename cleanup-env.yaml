@@ -20,3 +20,16 @@
     - name: Get all neutron ports that need to be deleted
       set_fact:
         ports: "{{ vm_data.values() | map(attribute='ports') | map(attribute='management') | list }} + {{ vm_data.values() | map(attribute='ports') | map(attribute='dataplane') | list }}"
+
+    - name: Remove instances
+      os_server:
+        state: absent
+        name: "{{ item }}"
+        timeout: 300
+      with_items: "{{ vm_data }}"
+
+    - name: Remove neutron ports
+      os_port:
+        state: absent
+        name: "{{ item.port.name }}"
+      with_items: "{{ ports }}"
