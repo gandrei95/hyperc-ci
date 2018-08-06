@@ -3,13 +3,16 @@ vms:
     name: "dv-hyperc"
     image: ubuntu1604
     flavor: "{{ devstack_flavor }}"
-    additional_params: ''
+    inventory_group: devstack
+    additional_params: 'ansible_ssh_private_key_file=/home/jenkins-slave/.ssh/id_rsa.pem ansible_ssh_common_args="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"'
   - hc2016-compute:
     name: "h1-hyperc"
     image: win2016hv
     flavor: "{{ hyperc_compute_flavor }}"
+    inventory_group: win2016-compute-hyperc
     config_drive: "true"
-    additional_params: ""
+    additional_params: "ansible_winrm_cert_pem=/home/jenkins-slave/ssl/ssl_winrm.crt ansible_winrm_cert_key_pem=/home/jenkins-slave/ssl/ssl_winrm.key ansible_winrm_transport=certificate ansible_ssh_user=administrator ansible_connection=winrm ansible_winrm_server_cert_validation=ignore ansible_ssh_port=5986"
+    userdata: ""
     ephemeral_disks: 2
     ephemeral_disk_size: "1"
     ephemeral_disk_filesystem: "ext4"
@@ -17,8 +20,10 @@ vms:
     name: "h2-hyperc"
     image: win2016-hypervrole
     flavor: "{{ hyperc_compute_flavor }}"
+    inventory_group: win2016-compute-hyperc
     config_drive: "true"
-    additional_params: ""
+    additional_params: "ansible_winrm_cert_pem=/home/jenkins-slave/ssl/ssl_winrm.crt ansible_winrm_cert_key_pem=/home/jenkins-slave/ssl/ssl_winrm.key ansible_winrm_transport=certificate ansible_ssh_user=administrator ansible_connection=winrm ansible_winrm_server_cert_validation=ignore ansible_ssh_port=5986"
+    userdata: ""
     ephemeral_disks: 2
     ephemeral_disk_size: "1"
     ephemeral_disk_filesystem: "ext4"

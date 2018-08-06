@@ -19,3 +19,18 @@
     - copy:
         content: "{{ vm_data | to_nice_yaml }}"
         dest: "./vm-data.yaml"
+
+    - name: Include vm-data variables file
+      include_vars:
+        file: "./vm-data.yaml"
+        name: vm_data
+
+    - name: Generate inventory file
+      blockinfile:
+        path: "./inv"
+        create: yes
+        block: |
+          [{{ item.inventory_group }}]
+          {{ vm_data[item.name].ports.management.port.fixed_ips[0].ip_address }} hostname={{ item.name }} {{ item.additional_params }}
+        marker: "# {mark} {{ item.name }}"
+      with_items: "{{ vms }}"
