@@ -16,3 +16,28 @@
       fixed_ips:
         - subnet_id: e3cc60cc-fb78-43d5-9601-e3fe9be37d7c
     register: create_data_port_out
+
+  - set_fact:
+      boot_common_part: nova boot {{ vm.name }} --config-drive {{ vm.config_drive | default('false') }} --flavor {{ vm.flavor }} --image {{ vm.image }} --availability-zone {{ vm.availability_zone | default('nova:r06-u03-ucc') }} --nic port-id={{ create_mgmt_port_out.port.id }} --nic port-id={{ create_data_port_out.port.id }}
+
+  - set_fact:
+      boot_common_part: "{{ boot_common_part+' '+('--ephemeral size='+vm.ephemeral_disk_size+',format='+vm.ephemeral_disk_filesystem+' ') * vm.ephemeral_disks }}"
+    when: vm.ephemeral_disks is defined and vm.ephemeral_disks != 0
+
+  - name: Create instance {{ vm.name }}
+    shell: |
+      {{ boot_common_part }}
+    register: command_output
+
+  - copy:
+      content: "{{ command_output.stdout }}"
+      dest: "./{{ vm-data }}-nova-boot"
+
+  - name: Get server id for {{ vm.name }}
+    shell: |
+      cat ./{{ vm-data }}-nova-boot | grep -w id | awk '{ print $4 }'
+    register: id
+
+  - name: Save instance create output
+    set_fact:
+      vm_data: "{{ vm_data | default({}) | combine( {vm.name: { 'server': vm.name, 'ports': { 'management': create_mgmt_port_out, 'dataplane': create_data_port_out }, 'boot_command': boot_common_part, 'server_id': id.stdout }} ) }}"
