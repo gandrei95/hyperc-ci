@@ -2,6 +2,8 @@
 - name: wait-for-env.yaml
   hosts: all
   gather_facts: no
+  vars_files:
+    - job_vars/params.yaml
 
   tasks:
     - name: Wait for all VMs to be reachable

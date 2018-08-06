@@ -18,11 +18,11 @@
     register: create_data_port_out
 
   - set_fact:
-      boot_common_part: nova boot {{ vm.name }} --config-drive {{ vm.config_drive | default('false') }} --flavor {{ vm.flavor }} --image {{ vm.image }} --availability-zone {{ vm.availability_zone | default('nova:r06-u03-ucc') }} --nic port-id={{ create_mgmt_port_out.port.id }} --nic port-id={{ create_data_port_out.port.id }}
+      boot_common_part: nova boot {{ vm.name }} --config-drive {{ vm.config_drive | default('false') }} --flavor {{ vm.flavor }} --image {{ vm.image }} --key-name default --availability-zone {{ vm.availability_zone | default('nova:r06-u03-ucc') }} --nic port-id={{ create_mgmt_port_out.port.id }} --nic port-id={{ create_data_port_out.port.id }}
 
   - set_fact:
-      boot_common_part: "{{ boot_common_part+' '+('--ephemeral size='+vm.ephemeral_disk_size+',format='+vm.ephemeral_disk_filesystem+' ') * vm.ephemeral_disks }}"
-    when: vm.ephemeral_disks is defined and vm.ephemeral_disks != 0
+      boot_common_part: "{{ boot_common_part+' --user-data '+vm.userdata+' '+('--ephemeral size='+vm.ephemeral_disk_size+',format='+vm.ephemeral_disk_filesystem+' ') * vm.ephemeral_disks }}"
+    when: (vm.ephemeral_disks is defined and vm.userdata != "") and vm.ephemeral_disks != 0
 
   - name: Create instance {{ vm.name }}
     shell: |
