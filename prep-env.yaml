@@ -6,7 +6,7 @@
     - job_vars/params.yaml
 
   tasks:
-    - name: Include variables for job_vars/hyperc
+    - name: Include variables from job_vars/hyperc
       include_vars: "job_vars/hyperc"
       failed_when: False
       tags: always
