@@ -1,0 +1,18 @@
+---
+  - name: Create neutron management port for instance {{ vm.name }}
+    os_port:
+      state: present
+      name: "{{ vm.name }}-mgmt"
+      network: dataplane
+      fixed_ips:
+        - subnet_id: 2759aa26-d9b9-4851-8205-c361f5438133
+    register: create_mgmt_port_out
+
+  - name: Create neutron dataplane port for instance {{ vm.name }}
+    os_port:
+      state: present
+      name: "{{ vm.name }}-data"
+      network: dataplane
+      fixed_ips:
+        - subnet_id: e3cc60cc-fb78-43d5-9601-e3fe9be37d7c
+    register: create_data_port_out

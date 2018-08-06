@@ -1,0 +1,21 @@
+---
+- name: prep-env.yaml
+  host: 127.0.0.1
+  connection: local
+  vars_files:
+    - job_vars/params.yaml
+
+  tasks:
+    - name: Include variables for job_vars/hyperc
+      include_vars: "job_vars/hyperc"
+      failed_when: False
+      tags: always
+
+    - include: tasks/boot.yaml
+      with_items: "{{ vms }}"
+      loop_control:
+        loop_var: vm
+
+    - copy:
+        content: "{{ vm_data | to_nice_yaml }}"
+        dest: "./vm-data.yaml"

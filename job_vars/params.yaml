@@ -1,0 +1,3 @@
+---
+devstack_flavor: "devstack"
+hyperc_compute_flavor: "hyperc-compute"
