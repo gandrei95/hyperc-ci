@@ -24,3 +24,4 @@ vms:
     ephemeral_disk_filesystem: "ext4"
 
 ### ephemeral_disks greater than 2 can not be launched
+### ERROR (BadRequest): Block Device Mapping is Invalid: You specified more local devices than the limit allows (HTTP 400)
