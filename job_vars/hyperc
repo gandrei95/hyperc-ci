@@ -10,15 +10,17 @@ vms:
     flavor: "{{ hyperc_compute_flavor }}"
     config_drive: "true"
     additional_params: ""
-    ephemeral_disks: 3
+    ephemeral_disks: 2
     ephemeral_disk_size: "1"
     ephemeral_disk_filesystem: "ext4"
-#  - hc2016-compute:
-#    name: "h2-hyperc"
-#    image: win2016-hypervrole
-#    flavor: "{{ hyperc_compute_flavor }}"
-#    config_drive: "true"
-#    additional_params: ""
-#    ephemeral_disks: 3
-#    ephemeral_disk_size: "1"
-#    ephemeral_disk_filesystem: "ext4"
+  - hc2016-compute:
+    name: "h2-hyperc"
+    image: win2016-hypervrole
+    flavor: "{{ hyperc_compute_flavor }}"
+    config_drive: "true"
+    additional_params: ""
+    ephemeral_disks: 2
+    ephemeral_disk_size: "1"
+    ephemeral_disk_filesystem: "ext4"
+
+### ephemeral_disks greater than 2 can not be launched
