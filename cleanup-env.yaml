@@ -33,3 +33,14 @@
         state: absent
         name: "{{ item.port.name }}"
       with_items: "{{ ports }}"
+
+    - name: Remove unused files
+      file:
+        name: "{{ item }}-nova-boot"
+        state: absent
+      with_items: "{{ vm_data }}"
+
+    - name: Remove vm-data.yaml file
+      file:
+        name: "./vm-data.yaml"
+        state: absent
