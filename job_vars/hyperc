@@ -12,7 +12,7 @@ vms:
     inventory_group: win2016-compute-hyperc
     config_drive: "true"
     additional_params: "ansible_winrm_cert_pem=/home/ubuntu/gandrei/cerificates/ssl_winrm.crt ansible_winrm_cert_key_pem=/home/jenkins-slave/ssl/ssl_winrm.key ansible_winrm_transport=certificate ansible_ssh_user=administrator ansible_connection=winrm ansible_winrm_server_cert_validation=ignore ansible_ssh_port=5986"
-    userdata: ""
+    userdata: "{{ lookup('file', '/home/ubuntu/gandrei/cerificates/ssl_winrm.crt') }}"
     ephemeral_disks: 2
     ephemeral_disk_size: "1"
     ephemeral_disk_filesystem: "ext4"
@@ -23,7 +23,7 @@ vms:
     inventory_group: win2016-compute-hyperc
     config_drive: "true"
     additional_params: "ansible_winrm_cert_pem=/home/ubuntu/gandrei/cerificates/ssl_winrm.crt ansible_winrm_cert_key_pem=/home/ubuntu/gandrei/cerificates/ssl_winrm.key ansible_winrm_transport=certificate ansible_ssh_user=administrator ansible_connection=winrm ansible_winrm_server_cert_validation=ignore ansible_ssh_port=5986"
-    userdata: ""
+    userdata: "{{ lookup('file', '/home/ubuntu/gandrei/cerificates/ssl_winrm.crt') }}"
     ephemeral_disks: 2
     ephemeral_disk_size: "1"
     ephemeral_disk_filesystem: "ext4"
